@@ -6,7 +6,7 @@ const BookDetail = require('../models/BookDetail')
 // POST/bookdetails
 
 router.post("/",async(req,res)=>{
-    const {name,author,genre,img,desc}=req.body
+    const {name,author,genre,img,desc,userid}=req.body
 
     try{
         let bookDetail = new BookDetail({
@@ -14,7 +14,8 @@ router.post("/",async(req,res)=>{
             author,
             genre,
             img,
-            desc
+            desc,
+            userid
         })
         await bookDetail.save();
         res.status(201).json({msg:"Recipe added sucessfully"})
@@ -51,6 +52,17 @@ router.get('/genre/:namee', async (req, res)=>{
     try {
         const Namee= req.params.namee;
         const data = await BookDetail.find({genre:Namee});
+        res.json(data);
+    } catch (error) {
+        console.error(error.message)
+        res.status(500).send("server error")
+    }
+})
+// GET /bookDetails/user/:id
+router.get('/user/:idd', async (req, res)=>{
+    try {
+        const idd= req.params.idd;
+        const data = await BookDetail.find({userid:idd});
         res.json(data);
     } catch (error) {
         console.error(error.message)
